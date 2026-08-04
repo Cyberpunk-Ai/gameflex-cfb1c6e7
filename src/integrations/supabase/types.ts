@@ -50,6 +50,66 @@ export type Database = {
         }
         Relationships: []
       }
+      activity_feed: {
+        Row: {
+          activity_type: string
+          created_at: string
+          description: string | null
+          id: string
+          is_public: boolean | null
+          metadata: Json | null
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean | null
+          metadata?: Json | null
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean | null
+          metadata?: Json | null
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_name: string
+          id: string
+          properties: Json | null
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_name: string
+          id?: string
+          properties?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_name?: string
+          id?: string
+          properties?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           created_at: string
@@ -440,6 +500,33 @@ export type Database = {
         }
         Relationships: []
       }
+      referrals: {
+        Row: {
+          bonus_claimed: boolean | null
+          created_at: string
+          id: string
+          referred_id: string
+          referrer_id: string
+          status: string
+        }
+        Insert: {
+          bonus_claimed?: boolean | null
+          created_at?: string
+          id?: string
+          referred_id: string
+          referrer_id: string
+          status?: string
+        }
+        Update: {
+          bonus_claimed?: boolean | null
+          created_at?: string
+          id?: string
+          referred_id?: string
+          referrer_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       registrations: {
         Row: {
           created_at: string
@@ -493,6 +580,171 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      rewards: {
+        Row: {
+          amount: number
+          claimed_at: string | null
+          created_at: string
+          description: string | null
+          expires_at: string | null
+          id: string
+          status: string | null
+          tournament_id: string | null
+          type: Database["public"]["Enums"]["reward_type"]
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          claimed_at?: string | null
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          status?: string | null
+          tournament_id?: string | null
+          type: Database["public"]["Enums"]["reward_type"]
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          claimed_at?: string | null
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          status?: string | null
+          tournament_id?: string | null
+          type?: Database["public"]["Enums"]["reward_type"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rewards_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      squad_invites: {
+        Row: {
+          created_at: string
+          id: string
+          invitee_id: string
+          inviter_id: string
+          message: string | null
+          responded_at: string | null
+          squad_id: string
+          status: Database["public"]["Enums"]["squad_invite_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invitee_id: string
+          inviter_id: string
+          message?: string | null
+          responded_at?: string | null
+          squad_id: string
+          status?: Database["public"]["Enums"]["squad_invite_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invitee_id?: string
+          inviter_id?: string
+          message?: string | null
+          responded_at?: string | null
+          squad_id?: string
+          status?: Database["public"]["Enums"]["squad_invite_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "squad_invites_squad_id_fkey"
+            columns: ["squad_id"]
+            isOneToOne: false
+            referencedRelation: "squads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      squad_members: {
+        Row: {
+          id: string
+          joined_at: string
+          role: string
+          squad_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          role?: string
+          squad_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          role?: string
+          squad_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "squad_members_squad_id_fkey"
+            columns: ["squad_id"]
+            isOneToOne: false
+            referencedRelation: "squads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      squads: {
+        Row: {
+          captain_id: string
+          created_at: string
+          description: string | null
+          game: Database["public"]["Enums"]["game_type"] | null
+          id: string
+          is_public: boolean
+          logo_url: string | null
+          max_members: number
+          name: string
+          tag: string | null
+          updated_at: string
+        }
+        Insert: {
+          captain_id: string
+          created_at?: string
+          description?: string | null
+          game?: Database["public"]["Enums"]["game_type"] | null
+          id?: string
+          is_public?: boolean
+          logo_url?: string | null
+          max_members?: number
+          name: string
+          tag?: string | null
+          updated_at?: string
+        }
+        Update: {
+          captain_id?: string
+          created_at?: string
+          description?: string | null
+          game?: Database["public"]["Enums"]["game_type"] | null
+          id?: string
+          is_public?: boolean
+          logo_url?: string | null
+          max_members?: number
+          name?: string
+          tag?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       status_comments: {
         Row: {
@@ -849,6 +1101,39 @@ export type Database = {
         }
         Relationships: []
       }
+      whatsapp_messages: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          phone: string
+          sent_at: string | null
+          status: string | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          phone: string
+          sent_at?: string | null
+          status?: string | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          phone?: string
+          sent_at?: string | null
+          status?: string | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       user_followers: {
@@ -879,6 +1164,14 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_squad_captain: {
+        Args: { _squad_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_squad_member: {
+        Args: { _squad_id: string; _user_id: string }
         Returns: boolean
       }
     }
