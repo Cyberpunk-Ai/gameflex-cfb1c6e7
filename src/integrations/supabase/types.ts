@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          name: string
+          points: number
+          requirement_type: string
+          requirement_value: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description: string
+          icon?: string
+          id?: string
+          name: string
+          points?: number
+          requirement_type: string
+          requirement_value?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          points?: number
+          requirement_type?: string
+          requirement_value?: number
+        }
+        Relationships: []
+      }
+      conversations: {
+        Row: {
+          created_at: string
+          id: string
+          last_message_at: string | null
+          participant1_id: string
+          participant2_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          participant1_id: string
+          participant2_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          participant1_id?: string
+          participant2_id?: string
+        }
+        Relationships: []
+      }
       game_rooms: {
         Row: {
           created_at: string
@@ -61,6 +121,81 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      leaderboard_stats: {
+        Row: {
+          created_at: string
+          earnings: number | null
+          id: string
+          losses: number | null
+          points: number | null
+          tournaments_played: number | null
+          updated_at: string
+          user_id: string
+          wins: number | null
+        }
+        Insert: {
+          created_at?: string
+          earnings?: number | null
+          id?: string
+          losses?: number | null
+          points?: number | null
+          tournaments_played?: number | null
+          updated_at?: string
+          user_id: string
+          wins?: number | null
+        }
+        Update: {
+          created_at?: string
+          earnings?: number | null
+          id?: string
+          losses?: number | null
+          points?: number | null
+          tournaments_played?: number | null
+          updated_at?: string
+          user_id?: string
+          wins?: number | null
+        }
+        Relationships: []
+      }
+      marketplace_listings: {
+        Row: {
+          category: Database["public"]["Enums"]["listing_category"]
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          price: number
+          seller_id: string
+          status: Database["public"]["Enums"]["listing_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["listing_category"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          price: number
+          seller_id: string
+          status?: Database["public"]["Enums"]["listing_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["listing_category"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          price?: number
+          seller_id?: string
+          status?: Database["public"]["Enums"]["listing_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       matches: {
         Row: {
@@ -120,6 +255,77 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          is_encrypted: boolean | null
+          is_read: boolean | null
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          is_encrypted?: boolean | null
+          is_read?: boolean | null
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          is_encrypted?: boolean | null
+          is_read?: boolean | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          action_url: string | null
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message: string
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Insert: {
+          action_url?: string | null
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message: string
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Update: {
+          action_url?: string | null
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          title?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id?: string
+        }
+        Relationships: []
       }
       payments: {
         Row: {
@@ -288,6 +494,170 @@ export type Database = {
           },
         ]
       }
+      status_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_encrypted: boolean | null
+          status_id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_encrypted?: boolean | null
+          status_id: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_encrypted?: boolean | null
+          status_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "status_comments_status_id_fkey"
+            columns: ["status_id"]
+            isOneToOne: false
+            referencedRelation: "user_statuses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      status_likes: {
+        Row: {
+          created_at: string
+          id: string
+          status_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          status_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          status_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "status_likes_status_id_fkey"
+            columns: ["status_id"]
+            isOneToOne: false
+            referencedRelation: "user_statuses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      status_saves: {
+        Row: {
+          created_at: string
+          id: string
+          status_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          status_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          status_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "status_saves_status_id_fkey"
+            columns: ["status_id"]
+            isOneToOne: false
+            referencedRelation: "user_statuses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          description: string
+          id: string
+          priority: Database["public"]["Enums"]["ticket_priority"]
+          status: Database["public"]["Enums"]["ticket_status"]
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          priority?: Database["public"]["Enums"]["ticket_priority"]
+          status?: Database["public"]["Enums"]["ticket_status"]
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          priority?: Database["public"]["Enums"]["ticket_priority"]
+          status?: Database["public"]["Enums"]["ticket_status"]
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ticket_messages: {
+        Row: {
+          created_at: string
+          id: string
+          is_staff: boolean | null
+          message: string
+          ticket_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_staff?: boolean | null
+          message: string
+          ticket_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_staff?: boolean | null
+          message?: string
+          ticket_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tournaments: {
         Row: {
           created_at: string
@@ -357,6 +727,56 @@ export type Database = {
         }
         Relationships: []
       }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          achievement_id: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -378,9 +798,80 @@ export type Database = {
         }
         Relationships: []
       }
+      user_statuses: {
+        Row: {
+          comments_count: number | null
+          content: string | null
+          created_at: string
+          expires_at: string | null
+          game: string | null
+          id: string
+          likes_count: number | null
+          media_type: string | null
+          media_url: string | null
+          post_type: string | null
+          tags: string[] | null
+          tournament_id: string | null
+          user_id: string
+          views_count: number | null
+        }
+        Insert: {
+          comments_count?: number | null
+          content?: string | null
+          created_at?: string
+          expires_at?: string | null
+          game?: string | null
+          id?: string
+          likes_count?: number | null
+          media_type?: string | null
+          media_url?: string | null
+          post_type?: string | null
+          tags?: string[] | null
+          tournament_id?: string | null
+          user_id: string
+          views_count?: number | null
+        }
+        Update: {
+          comments_count?: number | null
+          content?: string | null
+          created_at?: string
+          expires_at?: string | null
+          game?: string | null
+          id?: string
+          likes_count?: number | null
+          media_type?: string | null
+          media_url?: string | null
+          post_type?: string | null
+          tags?: string[] | null
+          tournament_id?: string | null
+          user_id?: string
+          views_count?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      user_followers: {
+        Row: {
+          created_at: string | null
+          follower_id: string | null
+          following_id: string | null
+          id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          follower_id?: string | null
+          following_id?: string | null
+          id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          follower_id?: string | null
+          following_id?: string | null
+          id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
