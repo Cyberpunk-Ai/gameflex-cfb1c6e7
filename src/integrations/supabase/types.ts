@@ -628,6 +628,53 @@ export type Database = {
           },
         ]
       }
+      squad_events: {
+        Row: {
+          created_at: string
+          created_by: string
+          game: string | null
+          id: string
+          notes: string | null
+          rsvps: Json
+          squad_id: string
+          starts_at: string
+          title: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          game?: string | null
+          id?: string
+          notes?: string | null
+          rsvps?: Json
+          squad_id: string
+          starts_at: string
+          title: string
+          type?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          game?: string | null
+          id?: string
+          notes?: string | null
+          rsvps?: Json
+          squad_id?: string
+          starts_at?: string
+          title?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "squad_events_squad_id_fkey"
+            columns: ["squad_id"]
+            isOneToOne: false
+            referencedRelation: "squads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       squad_invites: {
         Row: {
           created_at: string
@@ -636,6 +683,7 @@ export type Database = {
           inviter_id: string
           message: string | null
           responded_at: string | null
+          role: string
           squad_id: string
           status: Database["public"]["Enums"]["squad_invite_status"]
           updated_at: string
@@ -647,6 +695,7 @@ export type Database = {
           inviter_id: string
           message?: string | null
           responded_at?: string | null
+          role?: string
           squad_id: string
           status?: Database["public"]["Enums"]["squad_invite_status"]
           updated_at?: string
@@ -658,6 +707,7 @@ export type Database = {
           inviter_id?: string
           message?: string | null
           responded_at?: string | null
+          role?: string
           squad_id?: string
           status?: Database["public"]["Enums"]["squad_invite_status"]
           updated_at?: string
@@ -665,6 +715,47 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "squad_invites_squad_id_fkey"
+            columns: ["squad_id"]
+            isOneToOne: false
+            referencedRelation: "squads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      squad_join_requests: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          responded_at: string | null
+          responded_by: string | null
+          squad_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          responded_at?: string | null
+          responded_by?: string | null
+          squad_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          responded_at?: string | null
+          responded_by?: string | null
+          squad_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "squad_join_requests_squad_id_fkey"
             columns: ["squad_id"]
             isOneToOne: false
             referencedRelation: "squads"
@@ -704,9 +795,54 @@ export type Database = {
           },
         ]
       }
+      squad_messages: {
+        Row: {
+          avatar_url: string | null
+          content: string
+          created_at: string
+          id: string
+          is_system: boolean
+          pinned: boolean
+          squad_id: string
+          user_id: string | null
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          is_system?: boolean
+          pinned?: boolean
+          squad_id: string
+          user_id?: string | null
+          username?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          is_system?: boolean
+          pinned?: boolean
+          squad_id?: string
+          user_id?: string | null
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "squad_messages_squad_id_fkey"
+            columns: ["squad_id"]
+            isOneToOne: false
+            referencedRelation: "squads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       squads: {
         Row: {
           captain_id: string
+          color: string
           created_at: string
           description: string | null
           game: Database["public"]["Enums"]["game_type"] | null
@@ -720,6 +856,7 @@ export type Database = {
         }
         Insert: {
           captain_id: string
+          color?: string
           created_at?: string
           description?: string | null
           game?: Database["public"]["Enums"]["game_type"] | null
@@ -733,6 +870,7 @@ export type Database = {
         }
         Update: {
           captain_id?: string
+          color?: string
           created_at?: string
           description?: string | null
           game?: Database["public"]["Enums"]["game_type"] | null
@@ -1171,6 +1309,10 @@ export type Database = {
         Returns: boolean
       }
       is_squad_member: {
+        Args: { _squad_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_squad_officer: {
         Args: { _squad_id: string; _user_id: string }
         Returns: boolean
       }
