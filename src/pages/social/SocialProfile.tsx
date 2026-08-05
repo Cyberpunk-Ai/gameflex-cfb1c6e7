@@ -55,6 +55,7 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { STORAGE_BUCKETS } from "@/integrations/supabase/storage-setup";
 import { formatDistanceToNow } from "date-fns";
+import { getStorageUrl } from "@/lib/storage-url";
 
 export default function SocialProfile() {
   const { user, profile, updateProfile, refreshProfile, isLoading: authLoading } = useAuth();
@@ -262,7 +263,7 @@ export default function SocialProfile() {
         .upload(filePath, file, { upsert: true, cacheControl: "0" });
       if (uploadError) throw uploadError;
 
-      const { data: { publicUrl } } = supabase.storage.from(STORAGE_BUCKETS.AVATARS).getPublicUrl(filePath);
+      const publicUrl = await getStorageUrl(STORAGE_BUCKETS.AVATARS, filePath);
       const updatedUrl = `${publicUrl}?v=${Date.now()}`;
       await updateProfile({ avatar_url: updatedUrl });
       await refreshProfile();

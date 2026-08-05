@@ -27,6 +27,7 @@ import {
   encodeTextStoryType,
 } from "@/features/stories/gradients";
 import { STORAGE_BUCKETS } from "@/integrations/supabase/storage-setup";
+import { getStorageUrl } from "@/lib/storage-url";
 
 const MAX_BYTES = 25 * 1024 * 1024;
 const MAX_VIDEO_SECONDS = 60;
@@ -189,9 +190,7 @@ export default function StoryNew() {
         .upload(path, file, { cacheControl: "3600", contentType: file.type, upsert: false });
       if (upErr) throw upErr;
 
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from(STORAGE_BUCKETS.STATUS_MEDIA).getPublicUrl(path);
+      const publicUrl = await getStorageUrl(STORAGE_BUCKETS.STATUS_MEDIA, path);
 
       const { error } = await supabase.from("user_statuses").insert({
         user_id: user.id,

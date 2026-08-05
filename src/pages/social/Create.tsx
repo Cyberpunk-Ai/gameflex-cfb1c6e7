@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { getStorageUrl } from "@/lib/storage-url";
 
 const POST_TYPES = [
   { emoji: "🏆", label: "Victory", id: "victory" },
@@ -118,10 +119,7 @@ export default function Create() {
             contentType: fileType === "image" ? "image/webp" : file.type,
           });
         if (uploadError) throw uploadError;
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("status-media").getPublicUrl(path);
-        mediaUrl = publicUrl;
+        mediaUrl = await getStorageUrl("status-media", path);
       }
       const { error } = await supabase.from("user_statuses").insert({
         user_id: user.id,

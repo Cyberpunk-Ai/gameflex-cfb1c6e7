@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { GAMER_AVATARS, getGamerAvatar } from "@/constants/avatars";
 import { Camera, Loader2, Save, Phone, User, Gamepad2, FileText, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getStorageUrl } from "@/lib/storage-url";
 
 interface EditProfileModalProps {
   open: boolean;
@@ -92,9 +93,7 @@ export function EditProfileModal({ open, onOpenChange }: EditProfileModalProps) 
 
         if (uploadError) throw uploadError;
 
-        const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(filePath);
-
-        avatarUrl = urlData.publicUrl;
+        avatarUrl = await getStorageUrl("avatars", filePath);
       }
 
       const { error } = await supabase

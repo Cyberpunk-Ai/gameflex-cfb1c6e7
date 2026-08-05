@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
+import { getStorageUrl } from "@/lib/storage-url";
 
 export type Payment = Database["public"]["Tables"]["payments"]["Row"];
 
@@ -98,27 +99,34 @@ export class PaymentService {
 
   async uploadScreenshot(file: File, paymentId: string): Promise<{ url: string; error?: Error }> {
     try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("You must be signed in to upload a receipt");
+
       const fileExt = file.name.split(".").pop();
-      const filePath = `receipts/${paymentId}.${fileExt}`;
+      // storage policies require the first folder to be the user's id
+      const filePath = `${user.id}/${paymentId}.${fileExt}`;
       const { error: uploadError } = await supabase.storage
-        .from("payments")
+        .from("screenshots")
         .upload(filePath, file, { upsert: true });
 
       if (uploadError) throw uploadError;
 
-      const { data } = supabase.storage.from("payments").getPublicUrl(filePath);
+      const signedUrl = await getStorageUrl("screenshots", filePath);
 
       // Update payment record with screenshot URL
       await supabase
         .from("payments")
-        .update({ screenshot_url: data.publicUrl } as any)
+        .update({ screenshot_url: signedUrl } as any)
         .eq("id", paymentId);
 
-      return { url: data.publicUrl };
+      return { url: signedUrl };
     } catch (err: any) {
       return { url: "", error: err instanceof Error ? err : new Error(String(err)) };
     }
   }
+
 }
 
 export const paymentService = new PaymentService();

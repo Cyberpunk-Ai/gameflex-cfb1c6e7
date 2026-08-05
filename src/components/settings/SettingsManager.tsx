@@ -48,6 +48,7 @@ import {
   Tv,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { getStorageUrl } from "@/lib/storage-url";
 
 // Preset Avatars for Gamers
 const PRESET_AVATARS = [
@@ -375,9 +376,9 @@ export function SettingsManager({
         };
         reader.readAsDataURL(file);
       } else {
-        const { data: publicUrlData } = supabase.storage.from("avatars").getPublicUrl(filePath);
-        if (publicUrlData?.publicUrl) {
-          setAvatarUrl(publicUrlData.publicUrl);
+        const signedAvatarUrl = await getStorageUrl("avatars", filePath);
+        if (signedAvatarUrl) {
+          setAvatarUrl(signedAvatarUrl);
           toast({
             title: "Avatar Uploaded",
             description: 'Click "Save Profile Changes" to apply.',
