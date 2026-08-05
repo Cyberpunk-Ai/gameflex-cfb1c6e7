@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
+import { getStorageUrl } from "@/lib/storage-url";
 
 export type Payment = Database["public"]["Tables"]["payments"]["Row"];
 
@@ -106,7 +107,7 @@ export class PaymentService {
 
       if (uploadError) throw uploadError;
 
-      const { data } = supabase.storage.from("payments").getPublicUrl(filePath);
+      const signedUrl = await getStorageUrl("screenshots", filePath);
 
       // Update payment record with screenshot URL
       await supabase

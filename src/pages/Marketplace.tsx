@@ -35,6 +35,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Store, Plus, Search, User, Tag, MessageCircle, Loader2 } from "lucide-react";
 import { ContactSellerModal } from "@/components/contact-seller-modal";
+import { getStorageUrl } from "@/lib/storage-url";
 
 const categoryIcons: Record<string, string> = {
   account: "👤",
@@ -102,11 +103,7 @@ const Marketplace = () => {
 
     if (error) throw error;
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("tournament-images").getPublicUrl(fileName);
-
-    return publicUrl;
+    return await getStorageUrl("tournament-images", fileName);
   };
 
   const createListingMutation = useMutation({

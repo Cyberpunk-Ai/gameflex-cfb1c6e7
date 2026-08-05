@@ -9,6 +9,7 @@ import { Image as ImageIcon, Video, Smile, Send, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
+import { getStorageUrl } from "@/lib/storage-url";
 
 export function CreateStatus() {
   const { user, profile } = useAuth();
@@ -66,8 +67,7 @@ export function CreateStatus() {
             contentType: isImage ? "image/webp" : mediaFile.type,
           });
         if (uploadError) throw uploadError;
-        const { data: publicData } = supabase.storage.from("status-media").getPublicUrl(path);
-        media_url = publicData.publicUrl;
+        media_url = await getStorageUrl("status-media", path);
         media_type = isImage ? "image" : "video";
         setIsUploading(false);
       }

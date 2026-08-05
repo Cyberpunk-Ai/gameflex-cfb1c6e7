@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { useQueryClient } from "@tanstack/react-query";
+import { getStorageUrl } from "@/lib/storage-url";
 
 interface PaymentModalProps {
   tournament: {
@@ -118,8 +119,7 @@ export function PaymentModal({ tournament, isOpen, onClose, onSuccess }: Payment
             .from("screenshots")
             .upload(filePath, screenshotFile);
           if (!uploadError) {
-            const { data: urlData } = supabase.storage.from("screenshots").getPublicUrl(filePath);
-            screenshotUrl = urlData.publicUrl;
+            screenshotUrl = await getStorageUrl("screenshots", filePath);
           }
         } catch (e) {
           console.warn("Screenshot upload warning:", e);

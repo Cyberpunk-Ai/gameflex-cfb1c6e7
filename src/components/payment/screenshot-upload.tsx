@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload, X, CheckCircle, Camera, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getStorageUrl } from "@/lib/storage-url";
 
 interface ScreenshotUploadProps {
   tournamentId: string;
@@ -84,8 +85,7 @@ export function ScreenshotUpload({
           .upload(filePath, screenshotFile);
 
         if (!uploadError) {
-          const { data: urlData } = supabase.storage.from("screenshots").getPublicUrl(filePath);
-          screenshotUrl = urlData.publicUrl;
+          screenshotUrl = await getStorageUrl("screenshots", filePath);
         }
       } catch (e) {
         console.warn("Screenshot upload warning:", e);

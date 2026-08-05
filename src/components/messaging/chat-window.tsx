@@ -34,6 +34,7 @@ import { encryptMessage, decryptMessage } from "@/lib/encryption";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "@/lib/router-compat";
+import { getStorageUrl } from "@/lib/storage-url";
 
 interface ChatWindowProps {
   conversationId: string;
@@ -398,9 +399,7 @@ export function ChatWindow({ conversationId, otherUser, onBack }: ChatWindowProp
 
       if (uploadError) throw uploadError;
 
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from(STORAGE_BUCKETS.STATUS_MEDIA).getPublicUrl(fileName);
+      const publicUrl = await getStorageUrl(STORAGE_BUCKETS.STATUS_MEDIA, fileName);
 
       const encrypted = await encryptMessage(`[IMAGE]${publicUrl}`);
       const { error: insertError } = await supabase.from("messages").insert({

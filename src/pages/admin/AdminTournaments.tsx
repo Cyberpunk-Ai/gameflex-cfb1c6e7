@@ -26,6 +26,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/lib/auth-context";
 import { formatExternalUrl } from "@/lib/utils";
 import {
+import { getStorageUrl } from "@/lib/storage-url";
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -88,11 +89,7 @@ export default function AdminTournaments() {
 
     if (error) throw error;
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("tournament-images").getPublicUrl(fileName);
-
-    return publicUrl;
+    return await getStorageUrl("tournament-images", fileName);
   };
 
   const createMutation = useMutation({
