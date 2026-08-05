@@ -99,10 +99,16 @@ export class PaymentService {
 
   async uploadScreenshot(file: File, paymentId: string): Promise<{ url: string; error?: Error }> {
     try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("You must be signed in to upload a receipt");
+
       const fileExt = file.name.split(".").pop();
-      const filePath = `receipts/${paymentId}.${fileExt}`;
+      // storage policies require the first folder to be the user's id
+      const filePath = `${user.id}/${paymentId}.${fileExt}`;
       const { error: uploadError } = await supabase.storage
-        .from("payments")
+        .from("screenshots")
         .upload(filePath, file, { upsert: true });
 
       if (uploadError) throw uploadError;
@@ -112,14 +118,15 @@ export class PaymentService {
       // Update payment record with screenshot URL
       await supabase
         .from("payments")
-        .update({ screenshot_url: data.publicUrl } as any)
+        .update({ screenshot_url: signedUrl } as any)
         .eq("id", paymentId);
 
-      return { url: data.publicUrl };
+      return { url: signedUrl };
     } catch (err: any) {
       return { url: "", error: err instanceof Error ? err : new Error(String(err)) };
     }
   }
+
 }
 
 export const paymentService = new PaymentService();
