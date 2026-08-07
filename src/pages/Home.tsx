@@ -330,12 +330,20 @@ export default function Home() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center p-12 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/30">
-            <h2 className="font-display text-3xl font-bold mb-4">Ready to Compete?</h2>
+            <h2 className="font-display text-3xl font-bold mb-4">
+              {isAuthenticated ? "Ready for your next match?" : "Ready to Compete?"}
+            </h2>
             <p className="text-muted-foreground mb-8">
-              Join thousands of gamers and start winning today.
+              {isAuthenticated
+                ? "Jump into a live tournament and climb the leaderboard."
+                : "Join thousands of gamers and start winning today."}
             </p>
             <Button size="xl" variant="gaming" asChild>
-              <Link to="/register">Get Started Free</Link>
+              {isAuthenticated ? (
+                <Link to="/tournaments">Find a Tournament</Link>
+              ) : (
+                <Link to="/register">Get Started Free</Link>
+              )}
             </Button>
           </div>
         </div>
