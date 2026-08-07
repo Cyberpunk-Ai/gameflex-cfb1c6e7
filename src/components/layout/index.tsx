@@ -34,10 +34,15 @@ export function Layout() {
     p === "/notifications";
 
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-background relative">
+    <div className="min-h-[100dvh] flex flex-col bg-background relative isolate">
       {!isSocial && <Header />}
       <main
-        className={isSocial ? "flex-1 flex flex-col min-w-0" : "flex-1 pt-20 flex flex-col min-w-0"}
+        key={isSocial ? "social" : "site"}
+        className={
+          isSocial
+            ? "route-surface flex-1 flex flex-col min-w-0"
+            : "route-surface flex-1 pt-20 flex flex-col min-w-0"
+        }
       >
         <Outlet />
       </main>
