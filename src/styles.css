@@ -388,3 +388,81 @@
     inset: -1px;
   }
 }
+
+/* ==========================================================================
+   Mobile GPU stability
+   Stacked backdrop-filter layers, huge blurred shadows and 3D transforms are
+   the main cause of blocky/torn canvas artifacts on mobile GPUs. On coarse
+   pointers (phones/tablets) we drop the compositor-heavy properties and fall
+   back to opaque surfaces, and we isolate each route so layers cannot bleed.
+   ========================================================================== */
+
+/* Every route/page view paints into its own compositor layer. */
+.route-surface {
+  isolation: isolate;
+  contain: paint style;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  /* Kill blur compositing: repaint cost per scroll frame is what tears. */
+  [class*="backdrop-blur"],
+  [class*="backdrop-filter"] {
+    backdrop-filter: none !important;
+  }
+
+  /* Translucent surfaces relied on the blur for legibility - make them solid. */
+  .bg-background\/80,
+  .bg-background\/90,
+  .bg-background\/95,
+  .bg-background\/60,
+  .bg-background\/70,
+  .bg-background\/50 {
+    background-color: hsl(var(--background)) !important;
+  }
+  .bg-card\/50,
+  .bg-card\/60,
+  .bg-card\/70,
+  .bg-card\/80,
+  .bg-card\/90,
+  .bg-card\/95 {
+    background-color: hsl(var(--card)) !important;
+  }
+  .bg-popover\/80,
+  .bg-popover\/90,
+  .bg-popover\/95 {
+    background-color: hsl(var(--popover)) !important;
+  }
+
+  /* Neon glows are very large blur radii; shrink them instead of removing. */
+  .shadow-neon {
+    box-shadow: 0 0 8px hsl(142 76% 45% / 0.35);
+  }
+  .shadow-neon-lg {
+    box-shadow: 0 0 12px hsl(142 76% 45% / 0.4);
+  }
+
+  /* No 3D layers / perspective on mobile drivers. */
+  [class*="perspective"],
+  [class*="preserve-3d"] {
+    transform-style: flat !important;
+    perspective: none !important;
+  }
+
+  /* will-change pins layers forever and exhausts GPU memory. */
+  * {
+    will-change: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
