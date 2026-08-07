@@ -8,6 +8,7 @@ import { TournamentCard } from "@/components/tournament-card";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getGamerAvatar } from "@/constants/avatars";
+import { useAuth } from "@/lib/auth-context";
 
 const features = [
   {
