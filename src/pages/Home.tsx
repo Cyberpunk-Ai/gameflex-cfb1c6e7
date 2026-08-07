@@ -143,7 +143,11 @@ export default function Home() {
                 </Link>
               </Button>
               <Button size="xl" variant="outline" asChild>
-                <Link to="/register">Create Account</Link>
+                {isAuthenticated ? (
+                  <Link to="/dashboard">Go to Dashboard</Link>
+                ) : (
+                  <Link to="/register">Create Account</Link>
+                )}
               </Button>
             </div>
 
