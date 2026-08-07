@@ -40,6 +40,7 @@ const games = [
 
 export default function Home() {
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuth();
 
   const { data: tournaments = [], isLoading: tournamentsLoading } = useQuery({
     queryKey: ["home-tournaments"],
