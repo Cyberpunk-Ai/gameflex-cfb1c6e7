@@ -509,7 +509,7 @@ export default function Flex() {
                             userId: user?.id ?? null,
                             entityType: "reel",
                             entityId: clip.id,
-                            action: "dismiss",
+                            action: "hide",
                           });
                           toast({
                             title: "Not interested",
