@@ -51,7 +51,7 @@ const primary = [
   { name: "Home", href: "/social", icon: Home, exact: true },
   { name: "Search", href: "/search", icon: Search },
   { name: "Explore", href: "/explore", icon: Compass },
-  { name: "Flex", href: "/reels", icon: Film },
+  { name: "Flex", href: "/flex", icon: Film },
   { name: "Messages", href: "/messages", icon: MessageCircle },
   { name: "Notifications", href: "/notifications", icon: Bell },
   { name: "Create", href: "/create", icon: PlusSquare },
@@ -321,7 +321,7 @@ function MobileBottomNav() {
     { name: "Home", href: "/social", icon: Home, exact: true },
     { name: "Search", href: "/search", icon: Search },
     { name: "Create", href: "/create", icon: PlusSquare },
-    { name: "Flex", href: "/reels", icon: Film },
+    { name: "Flex", href: "/flex", icon: Film },
   ];
 
   const sheetItems = [

@@ -7,6 +7,7 @@ export function Layout() {
   const socialPaths = [
     "/social",
     "/explore",
+    "/flex",
     "/reels",
     "/stories",
     "/search",
