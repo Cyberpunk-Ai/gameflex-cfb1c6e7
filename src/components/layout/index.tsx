@@ -1,6 +1,9 @@
 import { Outlet, useLocation } from "@/lib/router-compat";
 import { Header } from "./header";
 import { Footer } from "./footer";
+import { OfflineSupport } from "@/lib/offline";
+import { useAchievementAutoUnlock } from "@/features/achievements/hooks/useAchievementUnlock";
+
 
 export function Layout() {
   const location = useLocation();
