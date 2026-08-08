@@ -7,6 +7,7 @@ import { useAchievementAutoUnlock } from "@/features/achievements/hooks/useAchie
 
 export function Layout() {
   const location = useLocation();
+  useAchievementAutoUnlock();
   const socialPaths = [
     "/social",
     "/explore",
