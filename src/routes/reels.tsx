@@ -1,19 +1,9 @@
 // @ts-nocheck
-import { pageSeo } from "@/lib/seo";
-import { createFileRoute } from "@tanstack/react-router";
-import React, { lazy, Suspense } from "react";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-const LazyPage = lazy(() => import("@/pages/social/Reels"));
-const Page: any = (props: any) => (
-  <Suspense fallback={null}>
-    <LazyPage {...props} />
-  </Suspense>
-);
+// Legacy path — Reels is now called Flex. Keep old links working.
 export const Route = createFileRoute("/reels")({
-  head: () =>
-    pageSeo({
-      title: "Flex — Short Gaming Clips | GameFlex",
-      description: "Scroll the best short-form gameplay clips uploaded by GameFlex creators.",
-    }),
-  component: Page,
+  beforeLoad: ({ search }) => {
+    throw redirect({ to: "/flex", search, replace: true });
+  },
 });
