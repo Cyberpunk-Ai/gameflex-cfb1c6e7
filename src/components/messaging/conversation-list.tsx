@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { isToday, differenceInMinutes, differenceInHours, differenceInDays } from "date-fns";
 import { decryptMessage } from "@/lib/encryption";
+import { messagesService } from "@/services/messages/MessagesService";
 
 interface ConversationListProps {
   selectedConversationId: string | null;
