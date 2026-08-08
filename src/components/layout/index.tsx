@@ -52,6 +52,7 @@ export function Layout() {
         <Outlet />
       </main>
       {!isSocial && <Footer />}
+      <OfflineSupport />
     </div>
   );
 }
