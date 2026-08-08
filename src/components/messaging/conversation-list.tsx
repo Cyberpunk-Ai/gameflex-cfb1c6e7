@@ -199,12 +199,29 @@ export function ConversationList({
   function ConversationItem({ conversation }: { conversation: any }) {
     const isSelected = selectedConversationId === conversation.id;
     const { unreadCount, isOnline, lastMsg, otherUser } = conversation;
-    const hasUnread = unreadCount > 0;
+    const hasUnread = unreadCount > 0 && !isSelected;
     const preview = lastMessagePreviews.get(conversation.id) ?? "No messages yet";
+
+    // Opening a conversation clears its unread badge immediately, then marks the
+    // messages read on the server so the count stays reset after a refetch.
+    const handleOpen = () => {
+      if (unreadCount > 0) {
+        queryClient.setQueryData(["conversations", user?.id], (old: any) =>
+          Array.isArray(old)
+            ? old.map((c: any) => (c.id === conversation.id ? { ...c, unreadCount: 0 } : c))
+            : old,
+        );
+        void messagesService.markAsRead(conversation.id, user!.id).then(() => {
+          queryClient.invalidateQueries({ queryKey: ["conversations", user?.id] });
+          queryClient.invalidateQueries({ queryKey: ["messages", conversation.id] });
+        });
+      }
+      onSelectConversation(conversation.id, otherUser);
+    };
 
     return (
       <button
-        onClick={() => onSelectConversation(conversation.id, otherUser)}
+        onClick={handleOpen}
         className={cn(
           "w-full flex items-center gap-3 px-3 py-2.5 mx-2 rounded-xl transition-all text-left",
           "my-0.5",
