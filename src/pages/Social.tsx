@@ -53,10 +53,11 @@ export default function Social() {
         {/* Create post */}
         {user && <CreateStatus />}
 
-        {/* Mobile / Tablet Suggestions Carousel (Instagram style) */}
-        <div className="lg:hidden my-4 px-1">
+        {/* Suggestions carousel — tablet only (hidden on phones, right rail covers desktop) */}
+        <div className="hidden md:block lg:hidden my-4 px-1">
           <SquadSuggestions limit={3} title="Suggested Gamers for You" className="rounded-xl border border-border/50 bg-card/60" />
         </div>
+
 
         {/* Feed tabs — sticky below header */}
         <div className="sticky top-[56px] md:top-0 z-30 bg-background/90 backdrop-blur-xl border-b border-border/40">
