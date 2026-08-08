@@ -23,6 +23,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as FairPlayRouteImport } from './routes/fair-play'
 import { Route as FaqsRouteImport } from './routes/faqs'
+import { Route as FlexRouteImport } from './routes/flex'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FriendsRouteImport } from './routes/friends'
 import { Route as GameRoomsRouteImport } from './routes/game-rooms'
@@ -151,6 +152,11 @@ const FairPlayRoute = FairPlayRouteImport.update({
 const FaqsRoute = FaqsRouteImport.update({
   id: '/faqs',
   path: '/faqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlexRoute = FlexRouteImport.update({
+  id: '/flex',
+  path: '/flex',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -464,6 +470,7 @@ export interface FileRoutesByFullPath {
   '/explore': typeof ExploreRoute
   '/fair-play': typeof FairPlayRoute
   '/faqs': typeof FaqsRoute
+  '/flex': typeof FlexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/friends': typeof FriendsRoute
   '/game-rooms': typeof GameRoomsRoute
@@ -538,6 +545,7 @@ export interface FileRoutesByTo {
   '/explore': typeof ExploreRoute
   '/fair-play': typeof FairPlayRoute
   '/faqs': typeof FaqsRoute
+  '/flex': typeof FlexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/friends': typeof FriendsRoute
   '/game-rooms': typeof GameRoomsRoute
@@ -612,6 +620,7 @@ export interface FileRoutesById {
   '/explore': typeof ExploreRoute
   '/fair-play': typeof FairPlayRoute
   '/faqs': typeof FaqsRoute
+  '/flex': typeof FlexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/friends': typeof FriendsRoute
   '/game-rooms': typeof GameRoomsRoute
@@ -689,6 +698,7 @@ export interface FileRouteTypes {
     | '/explore'
     | '/fair-play'
     | '/faqs'
+    | '/flex'
     | '/forgot-password'
     | '/friends'
     | '/game-rooms'
@@ -763,6 +773,7 @@ export interface FileRouteTypes {
     | '/explore'
     | '/fair-play'
     | '/faqs'
+    | '/flex'
     | '/forgot-password'
     | '/friends'
     | '/game-rooms'
@@ -836,6 +847,7 @@ export interface FileRouteTypes {
     | '/explore'
     | '/fair-play'
     | '/faqs'
+    | '/flex'
     | '/forgot-password'
     | '/friends'
     | '/game-rooms'
@@ -912,6 +924,7 @@ export interface RootRouteChildren {
   ExploreRoute: typeof ExploreRoute
   FairPlayRoute: typeof FairPlayRoute
   FaqsRoute: typeof FaqsRoute
+  FlexRoute: typeof FlexRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   FriendsRoute: typeof FriendsRoute
   GameRoomsRoute: typeof GameRoomsRoute
@@ -1050,6 +1063,13 @@ declare module '@tanstack/react-router' {
       path: '/faqs'
       fullPath: '/faqs'
       preLoaderRoute: typeof FaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flex': {
+      id: '/flex'
+      path: '/flex'
+      fullPath: '/flex'
+      preLoaderRoute: typeof FlexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -1550,6 +1570,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExploreRoute: ExploreRoute,
   FairPlayRoute: FairPlayRoute,
   FaqsRoute: FaqsRoute,
+  FlexRoute: FlexRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   FriendsRoute: FriendsRoute,
   GameRoomsRoute: GameRoomsRoute,

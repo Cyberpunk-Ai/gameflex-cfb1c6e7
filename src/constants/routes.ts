@@ -21,7 +21,7 @@ export const ROUTES = {
   SEARCH: "/search",
   EXPLORE: "/explore",
   LIVE: "/live",
-  REELS: "/reels",
+  FLEX: "/flex",
   STORIES: "/stories",
   STORIES_NEW: "/stories/new",
   GAME_ROOMS: "/game-rooms",

@@ -40,7 +40,7 @@ export class AchievementsService {
       return all.map((a) => ({
         ...a,
         unlocked: unlockedIds.has(a.id),
-        unlocked_at: unlocked.find((u) => u.achievement_id === a.id)?.unlocked_at,
+        unlocked_at: unlocked.find((u) => u.achievement_id === a.id)?.earned_at,
       }));
     } catch (err) {
       console.error("[AchievementsService] getUserAchievements:", err);
